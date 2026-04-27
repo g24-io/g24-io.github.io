@@ -28,10 +28,15 @@ taxonomies = [
 [markdown]
 highlight_code = true
 # Inline-style highlighting via a built-in syntect theme.
-# Picks "OneHalfDark" — close enough to our terminal-dark palette.
-# Later we'll switch to class-based + a custom syntax.css to match
-# the mockup's t-kw/t-type/t-str palette exactly.
-highlight_theme = "OneHalfDark"
+# Picks "ayu-dark" — cooler/greener palette that pairs better with the
+# site's #00d4aa accent than OneHalfDark's blue-grey.
+# Alternatives to try if this still feels off:
+#   - "kronuz"        : terminal-green, very high-contrast
+#   - "two-dark"      : softer blue-purple
+#   - "dracula"       : pink/green/yellow on near-black
+#   - "base16-mocha"  : warm brown undertone
+#   - "gruvbox-dark"  : earthy retro
+highlight_theme = "ayu-dark"
 smart_punctuation = false
 render_emoji = false
 external_links_target_blank = true

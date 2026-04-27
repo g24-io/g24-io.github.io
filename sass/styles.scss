@@ -956,3 +956,68 @@
     header.hero h1 { font-size: 30px; }
     article.post h1 { font-size: 24px; }
   }
+
+  /* ─────────────────────────────────────────────────────────── */
+  /*  Mobile overflow / wrap fixes (root cause: missing min-width:0
+      on grid items + no overflow-wrap on long tokens)            */
+  /* ─────────────────────────────────────────────────────────── */
+  html, body { overflow-x: hidden; }
+
+  /* Grid children default to min-width:auto which lets long children
+     (pre, table, code) push the parent wider than the viewport.
+     Force them to shrink to fit, then let inner overflow-x scroll. */
+  .post-body .grid > * { min-width: 0; }
+  .post-body .content { min-width: 0; }
+
+  /* Word-break on plain prose to handle long URLs / identifiers. */
+  .post-body .content p,
+  .post-body .content li,
+  .post-body .content blockquote,
+  .post-body .content h1,
+  .post-body .content h2,
+  .post-body .content h3,
+  .post-body .content h4 {
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
+  }
+
+  /* Inline <code> may contain very long identifiers — allow break-all. */
+  .post-body .content p code,
+  .post-body .content li code,
+  .post-body .content td code {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+
+  /* Code block + figure: explicitly bound to parent width. */
+  .codeblock,
+  .post-body .content figure.diagram {
+    max-width: 100%;
+  }
+  .codeblock pre,
+  .post-body .content figure.diagram pre {
+    max-width: 100%;
+  }
+
+  /* Phone tier: tone body type down a notch + reinforce wrap. */
+  @media (max-width: 720px) {
+    .post-body .content {
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+    .post-body .content p { margin-bottom: 16px; }
+    .post-body .content blockquote {
+      padding: 4px 14px;
+      margin: 18px 0;
+    }
+    /* article hero subtitle reads tighter on phone */
+    article.post .subtitle { font-size: 15px; line-height: 1.55; }
+    /* headings on phone */
+    .post-body .content h2 { font-size: 12px; margin-top: 36px; }
+    .post-body .content h3 { font-size: 18px; }
+    /* tldr looser word-break */
+    .tldr { overflow-wrap: anywhere; }
+    /* meta-line wraps cleanly */
+    article.post .meta-line { white-space: normal; line-height: 1.8; }
+    article.post .meta-line .sep { margin: 0 6px; }
+  }
