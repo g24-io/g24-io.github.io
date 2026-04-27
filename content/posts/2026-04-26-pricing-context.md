@@ -14,7 +14,7 @@ tldr = [
   "**4 个独立写聚合**：FloorRule（底价）/ ShadingModel（出价削减）/ MarginPolicy（利润）/ RevenueShareContract（分账）。",
   "**一份 PriceBook 读视图**：把 4 个聚合在 Auction 时刻的快照冻结，用于幂等计价。",
   "**4 个纯函数**：compute_reserve_price / apply_shading / apply_margin / compute_payout——可单独单元测试，无 IO。",
-  "**这套切分让 Bidding 上下文不必关心价格怎么算**——它只问 PriceBook 要"这个 imp 此刻的最终底价是多少"。",
+  "**这套切分让 Bidding 上下文不必关心价格怎么算**——它只问 PriceBook 要「这个 imp 此刻的最终底价是多少」。",
 ]
 +++
 
