@@ -15,6 +15,13 @@ build_search_index = true
 generate_feeds = true
 feed_filenames = ["rss.xml", "atom.xml"]
 
+# Taxonomies — power /tags and /series
+# (TOML: top-level array — must come BEFORE any `[table]` section.)
+taxonomies = [
+  { name = "tags", feed = true, paginate_by = 20 },
+  { name = "series", feed = true, paginate_by = 20 },
+]
+
 # Markdown rendering
 [markdown]
 highlight_code = true
@@ -33,12 +40,6 @@ bottom_footnotes = true
 
 # Anchor links on headings — needed for TOC
 insert_anchor_links = "right"
-
-# Taxonomies — power /topics and /series
-taxonomies = [
-  { name = "tags", feed = true, paginate_by = 20 },
-  { name = "series", feed = true, paginate_by = 20 },
-]
 
 # Site-wide variables consumed by templates
 [extra]
