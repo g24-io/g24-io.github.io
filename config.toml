@@ -27,12 +27,11 @@ taxonomies = [
 # Markdown rendering
 [markdown]
 highlight_code = true
-# Use class-based highlighting so we control colors via styles.css
-# (later we may switch to a custom syntect theme)
-highlight_theme = "css"
-highlight_themes_css = [
-  { theme = "css", filename = "syntax.css" },
-]
+# Inline-style highlighting via a built-in syntect theme.
+# Picks "OneHalfDark" — close enough to our terminal-dark palette.
+# Later we'll switch to class-based + a custom syntax.css to match
+# the mockup's t-kw/t-type/t-str palette exactly.
+highlight_theme = "OneHalfDark"
 smart_punctuation = false
 render_emoji = false
 external_links_target_blank = true
