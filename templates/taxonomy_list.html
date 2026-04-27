@@ -39,15 +39,15 @@
         {% for term in terms %}
           <a class="series-card" href="{{ term.permalink | safe }}">
             <div class="id mono">
-              SERIES-{{ loop.index | as_str | truncate(length=2, end="") }}
+              SERIES-{% if loop.index < 10 %}0{% endif %}{{ loop.index }}
               · <span class="live">● {{ term.pages | length }}</span>
             </div>
             <h3>{{ term.name }}</h3>
             <p>
               {{ term.pages | length }} post{{ term.pages | length | pluralize(suffix="s") }} ·
               {% if term.pages | length > 0 %}
-                most recent
-                {{ term.pages | first | get(key="date") | date(format="%Y-%m-%d") }}
+                {% set last_post = term.pages | first %}
+                most recent {{ last_post.date | date(format="%Y-%m-%d") }}
               {% else %}
                 empty
               {% endif %}

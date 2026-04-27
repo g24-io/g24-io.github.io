@@ -87,13 +87,14 @@
       {% else %}
         {% for term in series_taxo.items %}
           <a class="series-card" href="{{ term.permalink | safe }}">
-            <div class="id mono">SERIES-{{ loop.index | as_str | truncate(length=2, end="") }} · <span class="live">● live</span></div>
+            <div class="id mono">SERIES-{% if loop.index < 10 %}0{% endif %}{{ loop.index }} · <span class="live">● live</span></div>
             <h3>{{ term.name }}</h3>
             <p>{{ term.pages | length }} posts in this series.</p>
             <div class="stats">
               <span><span class="num">{{ term.pages | length }}</span> posts</span>
               {% if term.pages | length > 0 %}
-                <span>updated {{ term.pages | first | get(key="date") | date(format="%Y-%m-%d") }}</span>
+                {% set last_post = term.pages | first %}
+                <span>updated {{ last_post.date | date(format="%Y-%m-%d") }}</span>
               {% endif %}
             </div>
           </a>
