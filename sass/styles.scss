@@ -1021,3 +1021,41 @@
     article.post .meta-line { white-space: normal; line-height: 1.8; }
     article.post .meta-line .sep { margin: 0 6px; }
   }
+
+  /* ─────────────────────────────────────────────────────────── */
+  /*  Nav brand should never break; let ul wrap if cramped       */
+  /* ─────────────────────────────────────────────────────────── */
+  nav.top .row { gap: 14px; }
+  nav.top .brand {
+    white-space: nowrap;
+    flex-shrink: 0;          /* don't squeeze the brand */
+  }
+  nav.top ul {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    row-gap: 6px;
+  }
+
+  /* h2 in article body: drop UPPERCASE — it mangles mixed CN/EN
+     headings (e.g. "5ms" gets shouted to "5MS"). Bump weight a hair
+     to keep it visually a section header. */
+  .post-body .content h2 {
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .post-body .content h2 .num { letter-spacing: 0; }
+
+  /* phone tier — be more aggressive about nav clutter */
+  @media (max-width: 720px) {
+    /* hide rss AND topics on phones; keep posts/series/about */
+    nav.top ul li:nth-child(3),    /* topics */
+    nav.top ul li:last-child {     /* rss */
+      display: none;
+    }
+    /* if brand is still tight, shrink the prompt portion */
+    nav.top .brand { font-size: 12px; letter-spacing: -0.01em; }
+    /* h2 on phone: keep readable */
+    .post-body .content h2 { font-size: 12.5px; letter-spacing: 0.03em; }
+  }
