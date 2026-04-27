@@ -11,7 +11,9 @@ default_language = "zh-Hans"
 # Output / build
 output_dir = "public"
 compile_sass = true
-build_search_index = true
+# Zola's elasticlunr search backend does not support zh-Hans tokenization.
+# Disabled for now — when we add search, swap in pagefind via the Actions step.
+build_search_index = false
 generate_feeds = true
 feed_filenames = ["rss.xml", "atom.xml"]
 

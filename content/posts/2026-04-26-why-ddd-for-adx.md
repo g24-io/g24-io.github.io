@@ -3,6 +3,7 @@ title = "为什么我们用 DDD 重新设计 ADX"
 description = "从一团乱麻的实时竞价系统出发，把 4 个核心域切清楚——bidding / pricing / targeting / filtering——为什么这是一笔划算的前期投入。"
 date = 2026-04-26
 updated = 2026-04-27
+slug = "why-ddd-for-adx"
 
 [taxonomies]
 tags = ["ddd", "rust", "adx", "openrtb", "architecture"]
