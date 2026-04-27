@@ -817,3 +817,142 @@
     color: var(--dim); letter-spacing: 0.08em;
     text-transform: uppercase; font-size: 11px;
   }
+
+  /* ─────────────────────────────────────────────────────────── */
+  /*  Mobile responsive overrides                                */
+  /* ─────────────────────────────────────────────────────────── */
+
+  /* tablet */
+  @media (max-width: 960px) {
+    /* TOC drops below content earlier so reading width stays comfortable */
+    .post-body .grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    aside.toc {
+      position: static;
+      border-left: none;
+      border-top: 1px solid var(--border);
+      padding: 18px 0 0;
+    }
+  }
+
+  /* phone */
+  @media (max-width: 720px) {
+    .container { padding: 0 16px; }
+
+    /* nav: smaller, tighter */
+    nav.top .row { height: 50px; }
+    nav.top .brand { font-size: 13px; }
+    nav.top ul { gap: 14px; }
+    nav.top ul a { font-size: 12px; }
+    /* hide rss link on phones — keep core nav */
+    nav.top ul li:last-child { display: none; }
+
+    /* hero */
+    header.hero { padding: 56px 0 40px; }
+    header.hero .term { padding: 14px 14px; font-size: 12px; }
+    header.hero p.lead { font-size: 16px; }
+
+    /* article hero */
+    article.post { padding: 40px 0 18px; }
+    article.post h1 { font-size: clamp(26px, 8vw, 34px); }
+    article.post .subtitle { font-size: 16px; }
+    article.post .meta-line { font-size: 11px; }
+    article.post .by { font-size: 11px; }
+
+    /* breadcrumb wraps gracefully */
+    .breadcrumb .container { font-size: 11px; }
+    .breadcrumb .sep { margin: 0 4px; }
+
+    /* tldr a bit tighter */
+    .tldr { padding: 14px 16px; }
+    .tldr ul { padding-left: 16px; font-size: 13px; }
+
+    /* code blocks: lose horizontal padding to give code more room */
+    .codeblock { border-radius: 6px; }
+    .codeblock pre { padding: 12px 12px; font-size: 12.5px; }
+    .codeblock .cb-head { padding: 6px 12px; font-size: 10px; }
+
+    /* figure diagrams: smaller, allow scroll */
+    .post-body .content figure.diagram { padding: 12px 14px; }
+    .post-body .content figure.diagram pre { font-size: 11px; }
+
+    /* tables: wrap in a scroll container via display:block */
+    .post-body .content table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+    .post-body .content th,
+    .post-body .content td {
+      padding: 8px 10px;
+      white-space: normal;
+    }
+
+    /* invariants details */
+    .post-body .content details.invariants > summary { padding: 12px 14px; }
+    .post-body .content details.invariants .group { padding: 12px 14px; }
+    .post-body .content details.invariants ol.inv li {
+      padding: 7px 0 7px 48px;
+      font-size: 12.5px;
+    }
+
+    /* post body content typography */
+    .post-body .content { font-size: 15px; }
+    .post-body .content h2 { margin: 40px 0 12px; font-size: 13px; }
+    .post-body .content h3 { font-size: 19px; margin: 28px 0 10px; }
+
+    /* post-nav cards: already single-col at 720, reinforce padding */
+    .post-nav a { padding: 14px 16px; }
+
+    /* post-end: stack instead of justify-between */
+    .post-end {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .post-end .actions a { margin-left: 0; margin-right: 14px; }
+
+    /* footer: stack columns */
+    footer { padding: 28px 0 22px; }
+    footer .row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    footer .sig {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    footer .sig .ascii {
+      font-size: 9px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    /* series-card grid: already auto-fit; ensure single-col below 480 */
+    .series-card { padding: 18px 18px 16px; }
+
+    /* posts list: meta read inline on phone (already in 720 query, reinforce) */
+    ul.posts a.post { padding: 18px 6px; gap: 4px; }
+
+    /* paginator: tighter */
+    .pager { padding-top: 14px; }
+    .pager a { padding: 5px 10px; }
+  }
+
+  /* very narrow phones */
+  @media (max-width: 380px) {
+    nav.top ul { gap: 10px; }
+    nav.top ul a { font-size: 11px; }
+    /* further hide topics on tiny screens, keep posts/series/about */
+    nav.top ul li:nth-child(3) { display: none; }
+
+    header.hero h1 { font-size: 30px; }
+    article.post h1 { font-size: 24px; }
+  }
