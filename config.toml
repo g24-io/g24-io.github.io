@@ -1,0 +1,52 @@
+# g24-io-tech — Zola configuration
+# https://www.getzola.org/documentation/getting-started/configuration/
+
+base_url = "https://g24-io.github.io"
+title = "g24-io-tech"
+description = "Notes from building a programmatic ad exchange in Rust."
+default_language = "zh-Hans"
+theme = ""
+
+# Output / build
+output_dir = "public"
+compile_sass = true
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["rss.xml", "atom.xml"]
+
+# Markdown rendering
+[markdown]
+highlight_code = true
+# Use class-based highlighting so we control colors via styles.css
+# (later we may switch to a custom syntect theme)
+highlight_theme = "css"
+highlight_themes_css = [
+  { theme = "css", filename = "syntax.css" },
+]
+smart_punctuation = false
+render_emoji = false
+external_links_target_blank = true
+external_links_no_follow = false
+external_links_no_referrer = false
+bottom_footnotes = true
+
+# Anchor links on headings — needed for TOC
+insert_anchor_links = "right"
+
+# Taxonomies — power /topics and /series
+taxonomies = [
+  { name = "tags", feed = true, paginate_by = 20 },
+  { name = "series", feed = true, paginate_by = 20 },
+]
+
+# Site-wide variables consumed by templates
+[extra]
+author = "g24-io engineering"
+github_org = "g24-io"
+nav_links = [
+  { name = "posts", url = "/posts/" },
+  { name = "series", url = "/series/" },
+  { name = "topics", url = "/tags/" },
+  { name = "about", url = "/about/" },
+  { name = "rss", url = "/rss.xml" },
+]

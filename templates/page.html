@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero" style="padding: 80px 0 28px;">
+  <div class="container">
+    {% if page.date %}
+    <div class="meta mono" style="margin-bottom: 14px;">
+      <span class="dot"></span>{{ page.date | date(format="%Y-%m-%d") }}
+    </div>
+    {% endif %}
+    <h1 style="font-family: var(--sans); font-size: clamp(30px, 4.5vw, 44px); margin: 0 0 14px; letter-spacing: -0.015em;">
+      {{ page.title }}
+    </h1>
+    {% if page.description %}
+      <p class="lead">{{ page.description }}</p>
+    {% endif %}
+  </div>
+</header>
+
+<section class="post-body" style="padding-top: 0;">
+  <div class="container">
+    <div class="content" style="max-width: 720px; margin: 0 auto;">
+      {{ page.content | safe }}
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

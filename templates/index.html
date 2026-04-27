@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero">
+  <div class="container">
+    <div class="meta mono">
+      <span class="dot"></span>system online · {{ now() | date(format="%Y-%m-%d") }}
+    </div>
+    <h1>
+      Building an <span class="accent">Ad Exchange</span><br/>
+      in Rust, the slow way.
+    </h1>
+    <p class="lead">
+      <em>{{ config.title }}</em> 是 g24-io 工程团队的公开笔记本——
+      把构建一个高 QPS、低延迟、可演进的 ADX 过程中的设计取舍、不变式、
+      以及踩过的坑，整理成可以反复读的文档。
+    </p>
+    <div class="term mono">
+      <div class="body">
+        <span class="ps1">g24-io-tech@adx</span>:<span style="color:var(--accent-d)">~</span>$ <span class="out">cat /etc/manifesto</span><br/>
+        <span class="out">// 4 个核心域：bidding · pricing · targeting · filtering</span><br/>
+        <span class="out">// p99 内部 &lt; 30ms · 端到端 &lt; 100ms · 50K QPS / node</span><br/>
+        <span class="out">// DDD bounded contexts · Rust full stack · ArcSwap snapshots</span><br/>
+        <span class="ps1">g24-io-tech@adx</span>:<span style="color:var(--accent-d)">~</span>$ <span class="cur"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+{# ─── recent posts ─────────────────────────────────────────────── #}
+{% set posts_section = get_section(path="posts/_index.md") %}
+{% set latest = posts_section.pages | slice(end=5) %}
+
+<section class="feed" id="posts">
+  <div class="container">
+    <div class="section-head">
+      <h2><span class="hash">#</span> recent transmissions</h2>
+      <a class="more" href="{{ get_url(path='@/posts/_index.md') | safe }}">all posts</a>
+    </div>
+
+    {% if latest | length == 0 %}
+      <p style="font-family:var(--mono);color:var(--dim);font-size:13px;padding:20px 0">
+        // no transmissions yet — content/posts/ is empty.
+      </p>
+    {% else %}
+    <ul class="posts">
+      {% for post in latest %}
+        {% set series_tag = post.taxonomies.series | default(value=[]) | first | default(value="") %}
+      <li><a class="post" href="{{ post.permalink | safe }}">
+        <div class="when">
+          {{ post.date | date(format="%Y-%m-%d") }}
+          {% if series_tag %}<br/><span class="tag">{{ series_tag }}</span>{% endif %}
+        </div>
+        <div class="body">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.description | default(value=post.summary | default(value="")) | safe }}</p>
+        </div>
+        <div class="read">
+          <span class="num">{{ post.reading_time | default(value="?") }}</span>min read
+        </div>
+      </a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</section>
+
+{# ─── series ───────────────────────────────────────────────────── #}
+{% set series_taxo = get_taxonomy(kind="series") %}
+
+<section class="series" id="series">
+  <div class="container">
+    <div class="section-head">
+      <h2><span class="hash">#</span> series</h2>
+      <a class="more" href="{{ get_url(path='/series') | safe }}">all series</a>
+    </div>
+    <div class="series-grid">
+      {% if series_taxo.items | length == 0 %}
+        {# placeholder cards while content is empty #}
+        <div class="series-card" style="cursor:default">
+          <div class="id mono">SERIES-01 · <span style="color:var(--warn)">○ planning</span></div>
+          <h3>ADX Design Notes</h3>
+          <p>从零设计一个 SSP 流量驱动的 ADX：DDD 切上下文、Rust 工程实现、与 OLAP/流计算的集成。</p>
+          <div class="stats"><span>coming soon</span></div>
+        </div>
+      {% else %}
+        {% for term in series_taxo.items %}
+          <a class="series-card" href="{{ term.permalink | safe }}">
+            <div class="id mono">SERIES-{{ loop.index | as_str | truncate(length=2, end="") }} · <span class="live">● live</span></div>
+            <h3>{{ term.name }}</h3>
+            <p>{{ term.pages | length }} posts in this series.</p>
+            <div class="stats">
+              <span><span class="num">{{ term.pages | length }}</span> posts</span>
+              {% if term.pages | length > 0 %}
+                <span>updated {{ term.pages | first | get(key="date") | date(format="%Y-%m-%d") }}</span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ─── topics (tags) ────────────────────────────────────────────── #}
+{% set tag_taxo = get_taxonomy(kind="tags") %}
+
+<section class="topics" id="topics">
+  <div class="container">
+    <div class="section-head">
+      <h2><span class="hash">#</span> topics</h2>
+      <a class="more" href="{{ get_url(path='/tags') | safe }}">browse all</a>
+    </div>
+    <div class="tag-cloud">
+      {% if tag_taxo.items | length == 0 %}
+        <span style="font-family:var(--mono);color:var(--dim);font-size:12px">
+          // no tags yet
+        </span>
+      {% else %}
+        {% for term in tag_taxo.items %}
+          <a href="{{ term.permalink | safe }}">{{ term.name }}<span class="n">{{ term.pages | length }}</span></a>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

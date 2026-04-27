@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{# ─── breadcrumb ──────────────────────────────────────────────── #}
+<div class="breadcrumb">
+  <div class="container">
+    <span class="bc-prompt mono">cd</span>
+    <a href="{{ config.base_url }}">~</a>
+    <span class="sep">/</span>
+    <a href="{{ get_url(path='/posts') | safe }}">posts</a>
+    {% if page.taxonomies.series %}
+      <span class="sep">/</span>
+      <a href="{{ get_url(path='/series/' ~ (page.taxonomies.series | first | slugify)) | safe }}">
+        {{ page.taxonomies.series | first }}
+      </a>
+    {% endif %}
+    <span class="sep">/</span>
+    <span class="here">{{ page.slug }}</span>
+  </div>
+</div>
+
+{# ─── article hero ────────────────────────────────────────────── #}
+<article class="post">
+  <div class="container">
+    <div class="meta-line mono">
+      {% if page.taxonomies.series %}
+        <span class="pill">{{ page.taxonomies.series | first }}</span>
+      {% endif %}
+      {{ page.date | date(format="%Y-%m-%d") }}
+      <span class="sep">·</span>
+      {{ page.reading_time | default(value="?") }} min read
+      {% if page.updated %}
+        <span class="sep">·</span>
+        revised {{ page.updated | date(format="%Y-%m-%d") }}
+      {% endif %}
+    </div>
+
+    <h1>{{ page.title }}</h1>
+
+    {% if page.description %}
+      <p class="subtitle">{{ page.description }}</p>
+    {% endif %}
+
+    <div class="by">
+      <span>by <span class="author">{{ page.extra.author | default(value=config.extra.author) }}</span></span>
+      {% if page.taxonomies.tags %}
+        <span class="dot">●</span>
+        <span class="tags">
+          {% for tag in page.taxonomies.tags %}
+            <a href="{{ get_url(path='/tags/' ~ (tag | slugify)) | safe }}">{{ tag }}</a>
+          {% endfor %}
+        </span>
+      {% endif %}
+    </div>
+
+    <div class="ascii-break">─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</div>
+
+    {# Optional TL;DR — author writes either a string or list in front-matter:
+         [extra]
+         tldr = ["point one", "point two"]
+       (or)
+         [extra]
+         tldr = "single paragraph"
+    #}
+    {% if page.extra.tldr %}
+      <div class="tldr">
+        <h4>// tl;dr</h4>
+        {% if page.extra.tldr is iterable and page.extra.tldr is not string %}
+          <ul>
+            {% for item in page.extra.tldr %}
+              <li>{{ item | safe }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>{{ page.extra.tldr | safe }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</article>
+
+{# ─── body grid: content + sticky TOC ─────────────────────────── #}
+<section class="post-body">
+  <div class="container grid">
+    <div class="content">
+      {# Markdown rendered HTML — Zola pulldown-cmark + syntect output #}
+      {{ page.content | safe }}
+
+      <div class="ascii-break">─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</div>
+
+      <nav class="post-nav">
+        {% if page.lower %}
+          <a class="prev" href="{{ page.lower.permalink | safe }}">
+            <div class="dir">previous</div>
+            <div class="ttl">{{ page.lower.title }}</div>
+          </a>
+        {% else %}
+          <span></span>
+        {% endif %}
+        {% if page.higher %}
+          <a class="next" href="{{ page.higher.permalink | safe }}">
+            <div class="dir">next</div>
+            <div class="ttl">{{ page.higher.title }}</div>
+          </a>
+        {% else %}
+          <span></span>
+        {% endif %}
+      </nav>
+
+      <div class="post-end">
+        <div class="author-line">
+          posted by <span class="name">{{ page.extra.author | default(value=config.extra.author) }}</span>
+          · {{ page.date | date(format="%Y-%m-%d") }}
+          {% if page.updated %} · revised {{ page.updated | date(format="%Y-%m-%d") }}{% endif %}
+        </div>
+        <div class="actions">
+          <a href="https://github.com/{{ config.extra.github_org }}/g24-io.github.io/blob/main/{{ page.relative_path }}">discuss on github</a>
+          <a href="{{ page.permalink | safe }}">copy permalink</a>
+        </div>
+      </div>
+    </div>
+
+    <aside class="toc">
+      <h5><span class="hash">#</span> on this page</h5>
+      {% if page.toc and page.toc | length > 0 %}
+        <ol>
+          {% for h in page.toc %}
+            <li><a href="#{{ h.id }}">{{ h.title }}</a></li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p style="font-family:var(--mono);color:var(--dim);font-size:11px;margin:0">
+          // no headings
+        </p>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+
+{% endblock content %}

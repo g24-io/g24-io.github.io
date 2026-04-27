@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero" style="padding: 72px 0 28px;">
+  <div class="container">
+    <div class="meta mono">
+      <span class="dot"></span>
+      {%- if taxonomy.name == "series" -%}series index{%- else -%}topics index{%- endif %}
+      · {{ terms | length }} entries
+    </div>
+    <h1 style="font-size: clamp(28px, 4vw, 38px); margin: 0 0 6px;">
+      {% if taxonomy.name == "series" %}
+        <span class="accent">series</span> overview
+      {% else %}
+        all <span class="accent">topics</span>
+      {% endif %}
+    </h1>
+    <p class="lead" style="max-width: 680px; font-size: 15px;">
+      {% if taxonomy.name == "series" %}
+        每个系列是围绕同一个主题展开的多篇文章，按发布时间编号。
+      {% else %}
+        点任意标签查看相关文章。数字是该标签下的文章数。
+      {% endif %}
+    </p>
+  </div>
+</header>
+
+{% if taxonomy.name == "series" %}
+
+<section class="series" style="padding: 24px 0 48px;">
+  <div class="container">
+    {% if terms | length == 0 %}
+      <p style="font-family:var(--mono);color:var(--dim);font-size:13px;padding:20px 0">
+        // no series declared yet.
+      </p>
+    {% else %}
+      <div class="series-grid">
+        {% for term in terms %}
+          <a class="series-card" href="{{ term.permalink | safe }}">
+            <div class="id mono">
+              SERIES-{{ loop.index | as_str | truncate(length=2, end="") }}
+              · <span class="live">● {{ term.pages | length }}</span>
+            </div>
+            <h3>{{ term.name }}</h3>
+            <p>
+              {{ term.pages | length }} post{{ term.pages | length | pluralize(suffix="s") }} ·
+              {% if term.pages | length > 0 %}
+                most recent
+                {{ term.pages | first | get(key="date") | date(format="%Y-%m-%d") }}
+              {% else %}
+                empty
+              {% endif %}
+            </p>
+            <div class="stats">
+              <span><span class="num">{{ term.pages | length }}</span> posts</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% else %}
+
+<section class="topics" style="padding: 24px 0 48px;">
+  <div class="container">
+    {% if terms | length == 0 %}
+      <p style="font-family:var(--mono);color:var(--dim);font-size:13px;padding:20px 0">
+        // no tags yet.
+      </p>
+    {% else %}
+      <div class="tag-cloud">
+        {% for term in terms %}
+          <a href="{{ term.permalink | safe }}">{{ term.name }}<span class="n">{{ term.pages | length }}</span></a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endif %}
+
+{% endblock content %}

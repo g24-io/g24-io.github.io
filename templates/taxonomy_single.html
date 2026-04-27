@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero" style="padding: 72px 0 28px;">
+  <div class="container">
+    <div class="meta mono">
+      <span class="dot"></span>
+      {%- if taxonomy.name == "series" -%}series{%- else -%}topic{%- endif %}
+      · {{ term.pages | length }} transmissions
+    </div>
+    <h1 style="font-size: clamp(28px, 4vw, 38px); margin: 0 0 6px;">
+      <span class="accent">{{ taxonomy.name }}</span><span style="color:var(--dim);margin:0 6px">/</span><span>{{ term.name }}</span>
+    </h1>
+    <p class="lead" style="max-width: 680px; font-size: 15px;">
+      {% if taxonomy.name == "series" %}
+        本系列下的所有文章，按写作时间倒序。
+      {% else %}
+        所有打了 <code style="color:var(--accent)">#{{ term.name }}</code> 的文章。
+      {% endif %}
+    </p>
+  </div>
+</header>
+
+<section class="feed">
+  <div class="container">
+    {% set page_list = paginator.pages | default(value=term.pages) %}
+
+    {% if page_list | length == 0 %}
+      <p style="font-family:var(--mono);color:var(--dim);font-size:13px;padding:24px 0">
+        // no transmissions yet for this term.
+      </p>
+    {% else %}
+      <ul class="posts">
+        {% for post in page_list %}
+          {% set series_tag = post.taxonomies.series | default(value=[]) | first | default(value="") %}
+        <li><a class="post" href="{{ post.permalink | safe }}">
+          <div class="when">
+            {{ post.date | date(format="%Y-%m-%d") }}
+            {% if series_tag %}<br/><span class="tag">{{ series_tag }}</span>{% endif %}
+          </div>
+          <div class="body">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.description | default(value="") | safe }}</p>
+          </div>
+          <div class="read">
+            <span class="num">{{ post.reading_time | default(value="?") }}</span>min read
+          </div>
+        </a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if paginator and paginator.number_pagers > 1 %}
+      <nav class="pager">
+        <div class="side">
+          {% if paginator.previous %}
+            <a href="{{ paginator.previous | safe }}">← newer</a>
+          {% endif %}
+        </div>
+        <span class="info">
+          page {{ paginator.current_index }} / {{ paginator.number_pagers }}
+        </span>
+        <div class="side right">
+          {% if paginator.next %}
+            <a href="{{ paginator.next | safe }}">older →</a>
+          {% endif %}
+        </div>
+      </nav>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock content %}

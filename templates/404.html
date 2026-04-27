@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="hero" style="padding: 96px 0 96px;">
+  <div class="container">
+    <div class="meta mono" style="margin-bottom: 22px;">
+      <span class="dot" style="background: var(--danger); box-shadow: 0 0 12px var(--danger);"></span>
+      signal lost · status 404
+    </div>
+    <h1 style="font-family: var(--mono); font-size: clamp(40px, 7vw, 84px); letter-spacing: -0.02em;">
+      <span style="color: var(--danger);">404</span><br/>
+      not found
+    </h1>
+    <p class="lead">
+      This path does not exist in the index. It may have been moved, renamed,
+      或者从未存在过——这里没有重定向，所以你看到这页就是真没了。
+    </p>
+    <div class="term mono" style="margin-top: 24px;">
+      <div class="body">
+        <span class="ps1">g24-io-tech@adx</span>:<span style="color:var(--accent-d)">~</span>$ <span class="out">cat {{ current_url | default(value="/unknown") | safe }}</span><br/>
+        <span style="color: var(--danger);">cat: {{ current_url | default(value="/unknown") | safe }}: No such file or directory</span><br/>
+        <span class="ps1">g24-io-tech@adx</span>:<span style="color:var(--accent-d)">~</span>$ <span class="out">cd ~ &amp;&amp; ls -la</span><br/>
+        <span class="out">drwxr-xr-x  <a href="{{ get_url(path='/') | safe }}" style="color:var(--accent)">.</a>          (back to home)</span><br/>
+        <span class="out">drwxr-xr-x  <a href="{{ get_url(path='/posts') | safe }}" style="color:var(--accent)">posts/</a>     (all transmissions)</span><br/>
+        <span class="out">drwxr-xr-x  <a href="{{ get_url(path='/series') | safe }}" style="color:var(--accent)">series/</a>    (curated)</span><br/>
+        <span class="out">drwxr-xr-x  <a href="{{ get_url(path='/tags') | safe }}" style="color:var(--accent)">tags/</a>      (topics)</span><br/>
+        <span class="ps1">g24-io-tech@adx</span>:<span style="color:var(--accent-d)">~</span>$ <span class="cur"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% endblock content %}
