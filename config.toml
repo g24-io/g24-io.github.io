@@ -5,7 +5,8 @@ base_url = "https://g24-io.github.io"
 title = "g24-io-tech"
 description = "Notes from building a programmatic ad exchange in Rust."
 default_language = "zh-Hans"
-theme = ""
+
+# No external theme — templates and sass live in this repo.
 
 # Output / build
 output_dir = "public"
